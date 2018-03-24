@@ -6,19 +6,18 @@ export class Letter extends Component {
 	}
 
 	handleClick(evt) {
-		console.log(this.refs['letterValue'].value);
+		let guess = this.refs['letterValue'].value;
+		this.props.onClick(guess);
 	}
 
 	render() {
 		return (
-				<div>
-					<input type='button'
-						   onClick={this.handleClick.bind(this)}
-						   className='btn btn-default'
-						   value={this.props.letter}
-						   ref='letterValue'>
-					</input>
-				</div>
+				<input type='button'
+					   onClick={this.handleClick.bind(this)}
+					   className='btn btn-default'
+					   value={this.props.letter}
+					   ref='letterValue'>
+				</input>
 			)
 	}
 
