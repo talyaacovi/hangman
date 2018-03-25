@@ -14,14 +14,20 @@ class Main extends Component {
     }
 
     startGame() {
-    	let word = 'birthday';
+    	let word = 'banana';
     	word = word.split('');
     	this.setState({ game: true, word: word });
     }
     
     gameStatus(guesses) {
     	let statusMsg;
-    	if (this.state.correct.length === this.state.word.length) {
+    	let filled = 0;
+    	for (let i = 0; i < this.state.word.length; i++) {
+    		if (this.state.correct.includes(this.state.word[i].toUpperCase())) {
+    			filled += 1;
+    		}
+    	}
+    	if (filled === this.state.word.length) {
     		statusMsg = 'You won in ' + guesses + ' guesses!';
     		this.setState({ status: 'You won!' });
     	}
@@ -63,7 +69,7 @@ class Main extends Component {
     			return '  ' + letter + '  ';
     		}
     		else {
-    			return '   __  ';
+    			return '  __  ';
     		}
     	});
     	let status = this.state.status;
