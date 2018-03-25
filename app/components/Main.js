@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Letter } from './Letter';
+var randomWord = require('random-word-by-length');
 
 class Main extends Component {
     constructor(props) {
     	super(props);
-    	this.state = { word: [], letters: [], game: false, correct: [], incorrect: [], guesses: 0, status: null };
+    	this.state = { word: [], length: 1, letters: [], game: false, correct: [], incorrect: [], guesses: 0, status: null };
     	this.gameStatus.bind(this);
     };
 
@@ -14,9 +15,15 @@ class Main extends Component {
     }
 
     startGame() {
-    	let word = 'banana';
+    	let length = this.state.length;
+    	let word = randomWord(length);
     	word = word.split('');
     	this.setState({ game: true, word: word });
+    }
+
+    handleChange(evt) {
+    	length = parseInt(evt.target.value);
+    	this.setState({ length: length });
     }
     
     gameStatus(guesses) {
@@ -29,7 +36,7 @@ class Main extends Component {
     	}
     	if (filled === this.state.word.length) {
     		statusMsg = 'You won in ' + guesses + ' guesses!';
-    		this.setState({ status: 'You won!' });
+    		this.setState({ status: statusMsg });
     	}
     	else {
     		statusMsg = 'You have ' + (10 - guesses) + ' guesses left!';
@@ -48,8 +55,10 @@ class Main extends Component {
     		currIncorrect.push(letter);
     		this.setState({ incorrect: currIncorrect});
     	}
+    	let currRemaining = this.state.letters.filter(e => e !== letter);
     	let guesses = this.state.guesses + 1;
-    	this.setState({ guesses: guesses })
+    	
+    	this.setState({ guesses: guesses, letters: currRemaining })
     	this.gameStatus(guesses);
     }
 
@@ -101,6 +110,18 @@ class Main extends Component {
     		gameBoard = 
 		        	<div className='row'>
 		        		<div className='col-xs-12'>
+		        			<select onChange={this.handleChange.bind(this)}>
+		        				<option value='1'>1</option>
+		        				<option value='2'>2</option>
+		        				<option value='3'>3</option>
+		        				<option value='4'>4</option>
+		        				<option value='5'>5</option>
+		        				<option value='6'>6</option>
+		        				<option value='7'>7</option>
+		        				<option value='8'>8</option>
+		        				<option value='9'>9</option>
+		        				<option value='10'>10</option>
+		        			</select>
 		        			<input type='button' onClick={this.startGame.bind(this)} value='Start Game'></input>
 		        		</div>
 		        	</div>
