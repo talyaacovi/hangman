@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export class GameButton extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { length: 2 };
+		this.state = { length: 5 };
 	}
 
 	handleChange(evt) {

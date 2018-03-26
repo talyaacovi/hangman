@@ -37,28 +37,31 @@ class Main extends Component {
     	else if (guesses < 10) {
     		statusMsg = 'active';
     	}
-    	else {
+    	else if (guesses === 10) {
     		statusMsg = 'over';
     	}
 		this.setState({ status: statusMsg})
     }
 
     checkGuess(letter) {
+    	let currCorrect = this.state.correct;
+    	let currIncorrect = this.state.incorrect;
+    	let incGuess = this.state.incGuess;
+    	let totGuess = this.state.totGuess;
+
     	if (this.state.word.includes(letter.toLowerCase())) {
-    		let currCorrect = this.state.correct;
     		currCorrect.push(letter);
     		this.setState({ correct: currCorrect});
     	}
     	else {
-    		let currIncorrect = this.state.incorrect;
     		currIncorrect.push(letter);
-    		let incGuess = this.state.incGuess + 1;
-    		this.setState({ incorrect: currIncorrect, incGuess: incGuess });
+    		incGuess += 1;
     	}
+
     	let currRemaining = this.state.letters.filter(e => e !== letter);
-    	let totGuess = this.state.totGuess + 1;
-    	this.setState({ letters: currRemaining, totGuess: totGuess })
-    	this.gameStatus(this.state.incGuess);
+    	totGuess += 1;
+    	this.setState({ letters: currRemaining, totGuess: totGuess, incorrect: currIncorrect, incGuess: incGuess });
+    	this.gameStatus(incGuess);
     }
 
     render() {
@@ -92,6 +95,7 @@ class Main extends Component {
 	        		<div className='row'>
 	        			<div className='col-xs-3'>
         					{status}
+        					<p>{this.state.word}</p>
         					<p>Play again: </p>
     						<GameButton onClick={this.startGame.bind(this)} />
 	        			</div>
