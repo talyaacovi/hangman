@@ -35,13 +35,15 @@ class Main extends Component {
     		}
     	}
     	if (filled === this.state.word.length) {
-    		statusMsg = 'You won in ' + guesses + ' guesses!';
-    		this.setState({ status: statusMsg });
+    		statusMsg = 'won';
+    	}
+    	else if (guesses < 10) {
+    		statusMsg = 'active';
     	}
     	else {
-    		statusMsg = 'You have ' + (10 - guesses) + ' guesses left!';
-    		this.setState({ status: statusMsg});
+    		statusMsg = 'over';
     	}
+		this.setState({ status: statusMsg})
     }
 
     checkGuess(letter) {
@@ -81,9 +83,18 @@ class Main extends Component {
     			return '  __  ';
     		}
     	});
-    	let status = this.state.status;
+    	let status;
+    	if (this.state.status === 'active') {
+    		status = 'You have ' + (10 - this.state.guesses) + ' guesses left!'
+    	}
+    	else if (this.state.status === 'won') {
+    		status = 'You won in ' + this.state.guesses + ' guesses!'
+    	}
+    	else if (this.state.status === 'lost') {
+    		status = <p>'Game over! You ran out of guesses!'</p>
+    	}
 
-    	if (this.state.game) {
+    	if (this.state.game && this.state.status !== 'over') {
     		gameBoard = 
 	        		<div className='row'>
 	        			<div className='col-xs-3'>
@@ -94,6 +105,24 @@ class Main extends Component {
 	        				<h3>Guess a letter</h3>
 	        				<p>Number of guesses: {this.state.guesses}</p>
 	        				{letters}
+	        			</div>
+	        			<div className='col-xs-3'>
+	        				<h3>Correct</h3>
+	        				{correct}
+	        			</div>
+	        			<div className='col-xs-3'>
+	        				<h3>Incorrect</h3>
+	        				{incorrect}
+	        			</div>
+	        		</div>
+    	}
+
+    	else if (this.state.game && this.state.status === 'over') {
+    		gameBoard = 
+	        		<div className='row'>
+	        			<div className='col-xs-3'>
+        					{status}
+        					<h1>hello</h1>
 	        			</div>
 	        			<div className='col-xs-3'>
 	        				<h3>Correct</h3>
