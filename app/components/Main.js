@@ -1,29 +1,26 @@
 import React, { Component } from 'react';
 import { Letter } from './Letter';
+import { GameButton } from './GameButton';
 var randomWord = require('random-word-by-length');
 
 class Main extends Component {
     constructor(props) {
     	super(props);
-    	this.state = { word: [], length: 1, letters: [], game: false, correct: [], incorrect: [], guesses: 0, status: null };
+    	this.state = { word: [], letters: [], game: false, correct: [], incorrect: [], totGuess: 0, incGuess: 0, status: null };
     	this.gameStatus.bind(this);
+    	this.setAlphabet.bind(this);
     };
 
-    componentWillMount() {
+    setAlphabet() {
     	let alphabet = new Array( 26 ).fill( 1 ).map( ( _, i ) => String.fromCharCode( 65 + i ) );
-    	this.setState({ letters: alphabet });
+    	return alphabet;
     }
 
-    startGame() {
-    	let length = this.state.length;
+    startGame(length) {
     	let word = randomWord(length);
+    	let alphabet = this.setAlphabet();
     	word = word.split('');
-    	this.setState({ game: true, word: word });
-    }
-
-    handleChange(evt) {
-    	length = parseInt(evt.target.value);
-    	this.setState({ length: length });
+    	this.setState({ game: true, word: word, totGuess: 0, incGuess: 0, correct: [], incorrect: [], letters: alphabet, status: null });
     }
     
     gameStatus(guesses) {
@@ -55,24 +52,19 @@ class Main extends Component {
     	else {
     		let currIncorrect = this.state.incorrect;
     		currIncorrect.push(letter);
-    		this.setState({ incorrect: currIncorrect});
+    		let incGuess = this.state.incGuess + 1;
+    		this.setState({ incorrect: currIncorrect, incGuess: incGuess });
     	}
     	let currRemaining = this.state.letters.filter(e => e !== letter);
-    	let guesses = this.state.guesses + 1;
-    	
-    	this.setState({ guesses: guesses, letters: currRemaining })
-    	this.gameStatus(guesses);
+    	let totGuess = this.state.totGuess + 1;
+    	this.setState({ letters: currRemaining, totGuess: totGuess })
+    	this.gameStatus(this.state.incGuess);
     }
-
-
-
-
 
     render() {
 
-    	
-    	let letters = this.state.letters.map(( letter, i ) => <Letter onClick={this.checkGuess.bind(this)} letter={letter} key={i}/>);
     	let gameBoard;
+    	let letters = this.state.letters.map(( letter, i ) => <Letter onClick={this.checkGuess.bind(this)} letter={letter} key={i}/>);
     	let correct = this.state.correct.map(( letter, i) => <Letter letter={letter} key={i} />);
     	let incorrect = this.state.incorrect.map(( letter, i) => <Letter letter={letter} key={i} />);
     	let wordState = this.state.word.map(( letter, i ) => {
@@ -83,18 +75,59 @@ class Main extends Component {
     			return '  __  ';
     		}
     	});
+
     	let status;
     	if (this.state.status === 'active') {
-    		status = 'You have ' + (10 - this.state.guesses) + ' guesses left!'
+    		status = 'You have ' + (10 - this.state.incGuess) + ' guesses left!'
     	}
     	else if (this.state.status === 'won') {
-    		status = 'You won in ' + this.state.guesses + ' guesses!'
+    		status = 'You won in ' + this.state.totGuess + ' guesses!'
     	}
     	else if (this.state.status === 'over') {
     		status = 'Game over! You ran out of guesses!'
     	}
 
-    	if (this.state.game && this.state.status !== 'over') {
+    	if (this.state.game && this.state.status === 'won') {
+    		gameBoard = 
+	        		<div className='row'>
+	        			<div className='col-xs-3'>
+        					{status}
+        					<p>Play again: </p>
+    						<GameButton onClick={this.startGame.bind(this)} />
+	        			</div>
+	        			<div className='col-xs-3'>
+	        				<h3>Correct</h3>
+	        				{correct}
+	        			</div>
+	        			<div className='col-xs-3'>
+	        				<h3>Incorrect</h3>
+	        				{incorrect}
+	        			</div>
+	        		</div>
+    	}
+
+    	else if (this.state.game && this.state.status === 'over') {
+    		gameBoard = 
+	        		<div className='row'>
+	        			<div className='col-xs-3'>
+        					{status}
+        					<p>The word was: {this.state.word}</p>
+        					<p>Play again: </p>
+        					<GameButton onClick={this.startGame.bind(this)} />
+	        			</div>
+	        			<div className='col-xs-3'>
+	        				<h3>Correct</h3>
+	        				{correct}
+	        			</div>
+	        			<div className='col-xs-3'>
+	        				<h3>Incorrect</h3>
+	        				{incorrect}
+	        			</div>
+	        		</div>
+    	}
+
+
+    	else if (this.state.game) {
     		gameBoard = 
 	        		<div className='row'>
 	        			<div className='col-xs-3'>
@@ -117,47 +150,12 @@ class Main extends Component {
 	        		</div>
     	}
 
-    	else if (this.state.game && this.state.status === 'over') {
-    		gameBoard = 
-	        		<div className='row'>
-	        			<div className='col-xs-3'>
-        					{status}
-        					<p>The word was: {this.state.word}</p>
-	        			</div>
-	        			<div className='col-xs-3'>
-	        				<h3>Correct</h3>
-	        				{correct}
-	        			</div>
-	        			<div className='col-xs-3'>
-	        				<h3>Incorrect</h3>
-	        				{incorrect}
-	        			</div>
-	        		</div>
-    	}
-
     	else {
     		gameBoard = 
 		        	<div className='row'>
-		        		<div className='col-xs-12'>
-		        			<select onChange={this.handleChange.bind(this)}>
-		        				<option value='1'>1</option>
-		        				<option value='2'>2</option>
-		        				<option value='3'>3</option>
-		        				<option value='4'>4</option>
-		        				<option value='5'>5</option>
-		        				<option value='6'>6</option>
-		        				<option value='7'>7</option>
-		        				<option value='8'>8</option>
-		        				<option value='9'>9</option>
-		        				<option value='10'>10</option>
-		        			</select>
-		        			<input type='button' onClick={this.startGame.bind(this)} value='Start Game'></input>
-		        		</div>
+		        		<GameButton onClick={this.startGame.bind(this)} />
 		        	</div>
     	}
-
-
-
         
         return (
         	<div>
