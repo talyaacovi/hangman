@@ -90,8 +90,8 @@ class Main extends Component {
     	else if (this.state.status === 'won') {
     		status = 'You won in ' + this.state.guesses + ' guesses!'
     	}
-    	else if (this.state.status === 'lost') {
-    		status = <p>'Game over! You ran out of guesses!'</p>
+    	else if (this.state.status === 'over') {
+    		status = 'Game over! You ran out of guesses!'
     	}
 
     	if (this.state.game && this.state.status !== 'over') {
@@ -122,7 +122,7 @@ class Main extends Component {
 	        		<div className='row'>
 	        			<div className='col-xs-3'>
         					{status}
-        					<h1>hello</h1>
+        					<p>The word was: {this.state.word}</p>
 	        			</div>
 	        			<div className='col-xs-3'>
 	        				<h3>Correct</h3>
