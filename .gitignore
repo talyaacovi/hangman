@@ -7,3 +7,4 @@ webpack.config.js
 package.json
 .babelrc
 secrets.sh
+two.js
