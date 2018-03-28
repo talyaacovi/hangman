@@ -1,7 +1,23 @@
 import React, { Component } from 'react';
 import { Letter } from './Letter';
 import { GameButton } from './GameButton';
+
 var randomWord = require('random-word-by-length');
+
+let shapes = {
+	'1': 'makeCircle',
+	// '1': 'circle',
+	'2': 'line',
+	// '2': 'body',
+	'3': 'arm-1',
+	'4': 'arm-2',
+	'5': 'leg-1',
+	'6': 'leg-2',
+	'7': 'foot-1',
+	'8': 'foot-2',
+	'9': 'hand-1',
+	'10': 'hand-3'
+}
 
 class Main extends Component {
     constructor(props) {
@@ -56,6 +72,9 @@ class Main extends Component {
     	else {
     		currIncorrect.push(letter);
     		incGuess += 1;
+    		let shapeStr = incGuess.toString();
+    		let draw = shapes[shapeStr];
+    		drawShapes(draw);
     	}
 
     	let currRemaining = this.state.letters.filter(e => e !== letter);
@@ -151,6 +170,8 @@ class Main extends Component {
 	        				<h3>Incorrect</h3>
 	        				{incorrect}
 	        			</div>
+	        			<div className='col-xs-3' id='draw-shapes'>
+	        			</div>
 	        		</div>
     	}
 
@@ -174,5 +195,26 @@ class Main extends Component {
     }
 }
 
+
+function drawShapes(shape) {
+	var elem = document.getElementById('draw-shapes');
+	var params = { width: 285, height: 200 };
+	var two = new Two(params).appendTo(elem);
+	if (shape === 'makeCircle') {
+		var shape = two.makeCircle(72, 100, 50);
+		shape.fill = '#FF8000';
+		shape.stroke = 'orangered';
+		shape.linewidth = 5;
+	}
+	else if (shape === 'line') {
+		var shape = two.makeLine(70, 0, 70, 200);
+		shape.fill = '#FF8000';
+		shape.stroke = 'orangered';
+		shape.linewidth = 4;
+	}
+
+
+	two.update();
+}
 
 export default Main;
