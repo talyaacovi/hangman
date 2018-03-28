@@ -9,8 +9,10 @@ let shapes = {
 	// '1': 'circle',
 	'2': 'line',
 	// '2': 'body',
-	'3': 'arm-1',
-	'4': 'arm-2',
+	'3': 'diagonal',
+	// '3': 'leg-1',
+	'4': 'diagonalTwo',
+	// '4': 'leg-2',
 	'5': 'leg-1',
 	'6': 'leg-2',
 	'7': 'foot-1',
@@ -170,8 +172,8 @@ class Main extends Component {
 	        				<h3>Incorrect</h3>
 	        				{incorrect}
 	        			</div>
-	        			<div className='col-xs-3' id='draw-shapes'>
-	        			</div>
+			        	<div className='col-xs-3' id='draw-shapes'>
+			        	</div>
 	        		</div>
     	}
 
@@ -195,25 +197,43 @@ class Main extends Component {
     }
 }
 
+	
+var params = { width: 285, height: 600 };
+var two = new Two(params);
+var group = two.makeGroup();	
 
-function drawShapes(shape) {
+function drawShapes(shape) {	
 	var elem = document.getElementById('draw-shapes');
-	var params = { width: 285, height: 200 };
-	var two = new Two(params).appendTo(elem);
 	if (shape === 'makeCircle') {
-		var shape = two.makeCircle(72, 100, 50);
-		shape.fill = '#FF8000';
-		shape.stroke = 'orangered';
-		shape.linewidth = 5;
+		var circle = two.makeCircle(72, 100, 50);
+		circle.fill = '#FF8000';
+		circle.stroke = 'orangered';
+		circle.linewidth = 5;
+		group.add(circle);
 	}
 	else if (shape === 'line') {
-		var shape = two.makeLine(70, 0, 70, 200);
-		shape.fill = '#FF8000';
-		shape.stroke = 'orangered';
-		shape.linewidth = 4;
+		var line = two.makeLine(70, 150, 70, 300);
+		line.fill = '#FF8000';
+		line.stroke = 'orangered';
+		line.linewidth = 4;
+		group.add(line);
+	}
+	else if (shape === 'diagonal') {
+		var diagonal = two.makeLine(70, 0, 40, 200);
+		diagonal.fill = '#FF8000';
+		diagonal.stroke = 'orangered';
+		diagonal.linewidth = 4;
+		group.add(diagonal);
+	}
+	else if (shape === 'diagonalTwo') {
+		var diagonalTwo = two.makeLine(70, 200, 40, 0);
+		diagonalTwo.fill = '#FF8000';
+		diagonalTwo.stroke = 'orangered';
+		diagonalTwo.linewidth = 4;
+		group.add(diagonalTwo);
 	}
 
-
+	two.appendTo(elem);
 	two.update();
 }
 
