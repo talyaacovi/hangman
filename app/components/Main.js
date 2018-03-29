@@ -6,25 +6,15 @@ var randomWord = require('random-word-by-length');
 
 let shapes = {
 	'1': 'circle',
-	// '1': 'circle',
 	'2': 'line',
-	// '2': 'body',
 	'3': 'diagonal',
-	// '3': 'leg-1',
 	'4': 'diagonalTwo',
-	// '4': 'leg-2',
 	'5': 'diagonalThree',
-	// '5': 'arm-1',
 	'6': 'diagonalFour',
-	// '6': 'arm-2',
 	'7': 'ellipse',
-	// '7': 'foot-1',
 	'8': 'ellipseTwo',
-	// '8': 'foot-2',
 	'9': 'ellipseThree',
-	// '9': 'hand-1',
 	'10': 'ellipseFour'
-	// '10': 'hand-3'
 }
 
 class Main extends Component {
@@ -45,6 +35,7 @@ class Main extends Component {
     	let alphabet = this.setAlphabet();
     	word = word.split('');
     	this.setState({ game: true, word: word, totGuess: 0, incGuess: 0, correct: [], incorrect: [], letters: alphabet, status: null });
+    	resetHangman();
     }
     
     gameStatus(guesses) {
@@ -135,7 +126,7 @@ class Main extends Component {
 	        				<h3>Incorrect</h3>
 	        				{incorrect}
 	        			</div>
-			        	<div className='col-xs-4' id='draw-shapes'>
+			        	<div className='col-xs-3' id='draw-shapes'>
 			        	</div>
 	        		</div>
     	}
@@ -208,10 +199,25 @@ class Main extends Component {
     }
 }
 
+
+let two;
+let params;
+let group;
+
+function resetHangman() {
+	console.log('resetting');
+	if (typeof two !== 'undefined') {
+		console.log('in if');
+		$('#draw-shapes').empty();
+	}
+	params = { width: 500, height: 600 };
+	two = new Two(params);
+	group = two.makeGroup();
+}
 	
-var params = { width: 500, height: 600 };
-var two = new Two(params);
-var group = two.makeGroup();
+// var params = { width: 500, height: 600 };
+// var two = new Two(params);
+// var group = two.makeGroup();
 
 function drawShapes(shape) {	
 	var elem = document.getElementById('draw-shapes');
@@ -306,9 +312,6 @@ function drawShapes(shape) {
 		line4.stroke = 'black';
 		line4.linewidth = 2;
 		group.add(line4);
-	}
-	if (shape === 'new') {
-		two.clear();
 	}
 
 	two.appendTo(elem);
