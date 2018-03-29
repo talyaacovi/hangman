@@ -5,7 +5,7 @@ import { GameButton } from './GameButton';
 var randomWord = require('random-word-by-length');
 
 let shapes = {
-	'1': 'makeCircle',
+	'1': 'circle',
 	// '1': 'circle',
 	'2': 'line',
 	// '2': 'body',
@@ -13,12 +13,18 @@ let shapes = {
 	// '3': 'leg-1',
 	'4': 'diagonalTwo',
 	// '4': 'leg-2',
-	'5': 'leg-1',
-	'6': 'leg-2',
-	'7': 'foot-1',
-	'8': 'foot-2',
-	'9': 'hand-1',
-	'10': 'hand-3'
+	'5': 'diagonalThree',
+	// '5': 'arm-1',
+	'6': 'diagonalFour',
+	// '6': 'arm-2',
+	'7': 'ellipse',
+	// '7': 'foot-1',
+	'8': 'ellipseTwo',
+	// '8': 'foot-2',
+	'9': 'ellipseThree',
+	// '9': 'hand-1',
+	'10': 'ellipseFour'
+	// '10': 'hand-3'
 }
 
 class Main extends Component {
@@ -57,6 +63,7 @@ class Main extends Component {
     	}
     	else if (guesses === 10) {
     		statusMsg = 'over';
+    		drawShapes('dead');
     	}
 		this.setState({ status: statusMsg})
     }
@@ -128,6 +135,8 @@ class Main extends Component {
 	        				<h3>Incorrect</h3>
 	        				{incorrect}
 	        			</div>
+			        	<div className='col-xs-4' id='draw-shapes'>
+			        	</div>
 	        		</div>
     	}
 
@@ -148,6 +157,8 @@ class Main extends Component {
 	        				<h3>Incorrect</h3>
 	        				{incorrect}
 	        			</div>
+			        	<div className='col-xs-3' id='draw-shapes'>
+			        	</div>
 	        		</div>
     	}
 
@@ -198,39 +209,106 @@ class Main extends Component {
 }
 
 	
-var params = { width: 285, height: 600 };
+var params = { width: 500, height: 600 };
 var two = new Two(params);
-var group = two.makeGroup();	
+var group = two.makeGroup();
 
 function drawShapes(shape) {	
 	var elem = document.getElementById('draw-shapes');
-	if (shape === 'makeCircle') {
-		var circle = two.makeCircle(72, 100, 50);
+	if (shape === 'circle') {
+		var circle = two.makeCircle(100, 100, 50);
 		circle.fill = '#FF8000';
 		circle.stroke = 'orangered';
 		circle.linewidth = 5;
 		group.add(circle);
 	}
 	else if (shape === 'line') {
-		var line = two.makeLine(70, 150, 70, 300);
+		var line = two.makeLine(98, 150, 98, 300);
 		line.fill = '#FF8000';
 		line.stroke = 'orangered';
 		line.linewidth = 4;
 		group.add(line);
 	}
 	else if (shape === 'diagonal') {
-		var diagonal = two.makeLine(70, 0, 40, 200);
+		var diagonal = two.makeLine(98, 300, 68, 500);
 		diagonal.fill = '#FF8000';
 		diagonal.stroke = 'orangered';
 		diagonal.linewidth = 4;
 		group.add(diagonal);
 	}
 	else if (shape === 'diagonalTwo') {
-		var diagonalTwo = two.makeLine(70, 200, 40, 0);
+		var diagonalTwo = two.makeLine(98, 300, 128, 500);
 		diagonalTwo.fill = '#FF8000';
 		diagonalTwo.stroke = 'orangered';
 		diagonalTwo.linewidth = 4;
 		group.add(diagonalTwo);
+	}
+	else if (shape === 'diagonalThree') {
+		var diagonalThree = two.makeLine(38, 200, 98, 250);
+		diagonalThree.fill = '#FF8000';
+		diagonalThree.stroke = 'orangered';
+		diagonalThree.linewidth = 4;
+		group.add(diagonalThree);
+	}
+	else if (shape === 'diagonalFour') {
+		var diagonalFour = two.makeLine(98, 250, 158, 200);
+		diagonalFour.fill = '#FF8000';
+		diagonalFour.stroke = 'orangered';
+		diagonalFour.linewidth = 4;
+		group.add(diagonalFour);
+	}
+	if (shape === 'ellipse') {
+		var ellipse = two.makeEllipse(68, 500, 25, 15);
+		ellipse.fill = '#FF8000';
+		ellipse.stroke = 'orangered';
+		ellipse.linewidth = 5;
+		group.add(ellipse);
+	}	
+	if (shape === 'ellipseTwo') {
+		var ellipseTwo = two.makeEllipse(128, 500, 25, 15);
+		ellipseTwo.fill = '#FF8000';
+		ellipseTwo.stroke = 'orangered';
+		ellipseTwo.linewidth = 5;
+		group.add(ellipseTwo);
+	}
+	if (shape === 'ellipseThree') {
+		var ellipseThree = two.makeEllipse(38, 200, 20, 10);
+		ellipseThree.fill = '#FF8000';
+		ellipseThree.stroke = 'orangered';
+		ellipseThree.linewidth = 5;
+		group.add(ellipseThree);
+	}
+	if (shape === 'ellipseFour') {
+		var ellipseFour = two.makeEllipse(158, 200, 20, 10);
+		ellipseFour.fill = '#FF8000';
+		ellipseFour.stroke = 'orangered';
+		ellipseFour.linewidth = 5;
+		group.add(ellipseFour);
+	}
+	if (shape === 'dead') {
+		var line = two.makeLine(80, 100, 90, 110);
+		line.fill = 'black';
+		line.stroke = 'black';
+		line.linewidth = 2;
+		group.add(line);
+		var line2 = two.makeLine(90, 100, 80, 110);
+		line2.fill = 'black';
+		line2.stroke = 'black';
+		line2.linewidth = 2;
+		group.add(line2);
+		var line3 = two.makeLine(120, 100, 110, 110);
+		line3.fill = 'black';
+		line3.stroke = 'black';
+		line3.linewidth = 2;
+		group.add(line3);
+		var line4 = two.makeLine(110, 100, 120, 110);
+		line4.fill = 'black';
+		line4.stroke = 'black';
+		line4.linewidth = 2;
+		group.add(line4);
+	}
+	if (shape === 'new') {
+		two.clear();
 	}
 
 	two.appendTo(elem);
