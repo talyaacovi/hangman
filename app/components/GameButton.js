@@ -17,7 +17,7 @@ export class GameButton extends Component {
 
 	render() {
 		return (
-        		<div className='col-xs-12'>
+        		<div>
         			<form onSubmit={this.handleSubmit.bind(this)}>
         				<div className='form-group'>
 	        				<label>

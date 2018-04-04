@@ -181,16 +181,25 @@ class Main extends Component {
 
     	else {
     		gameBoard = 
-		        	<div className='row'>
-		        		<GameButton onClick={this.startGame.bind(this)} />
+    			<div>
+    				<div className='row'>
+		        		<div className='header col-xs-offset-3 col-xs-6'>
+		        			<h3>See if you can guess the word in under 10 guesses, or hangman is toast!</h3>
+		        		</div>
 		        	</div>
+		        	<div className='game-form row'>
+		        		<div className='header col-xs-offset-3 col-xs-6'>
+		        			<GameButton onClick={this.startGame.bind(this)} />
+		        		</div>
+		        	</div>
+	        	</div>
     	}
         
         return (
         	<div>
 	        	<div className='row'>
-	        		<div className='col-xs-12'>
-	        			<h2>Welcome to the hangman game!</h2>
+	        		<div className='header col-xs-offset-3 col-xs-6'>
+	        			<h2>Hangman</h2>
 	        		</div>
 	        	</div>
 	        	{gameBoard}
@@ -214,10 +223,6 @@ function resetHangman() {
 	two = new Two(params);
 	group = two.makeGroup();
 }
-	
-// var params = { width: 500, height: 600 };
-// var two = new Two(params);
-// var group = two.makeGroup();
 
 function drawShapes(shape) {	
 	var elem = document.getElementById('draw-shapes');
